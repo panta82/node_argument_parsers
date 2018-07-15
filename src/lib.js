@@ -3,7 +3,25 @@ const libPath = require('path');
 const Parser = require('expr-eval').Parser;
 
 const INFO = {
-  description: 'Expression evaluator',
+  title: 'Expression evaluator',
+  description: 'Evaluator for math expressions with variable support, in terminal or through HTTP',
+  syntax: `
+The parser accepts a pretty basic grammar. It's similar to normal JavaScript expressions, but is more math-oriented.
+For example, the ^ operator is exponentiation, not xor.
+
+Operators (in order of precendence):
+(...)                        Grouping
+f(), x.y                     Function call, property access
+!                            Factorial
+^                            Exponentiation
++, -, not, sqrt, round...    Unary prefix operators
+*, /, %                      Multiplication, division, remainder
++, -, ||                     Addition, subtraction, concatenation
+==, !=, >=, <=, >, <, in     Equals, not equals, etc. "in" means "is the left operand included in the right array operand?" (disabled by default)
+and                          Logical AND
+or                           Logical OR
+x ? y : z                    Ternary conditional (if x then y else z)
+`.trim(),
 };
 
 const DEFAULTS = {
@@ -72,15 +90,26 @@ function serve(port, debugLevel = DEFAULTS.debug) {
   }
 
   app.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Type', 'text/html');
     res.send(
       `
-${INFO.description}
+<html>
+<head>${INFO.title}</head>
+<body>
+<h1>${INFO.title}</h1>
 
-Call GET /evaluate/:expression to evaluate your expression. Variables can go to query params.
+<h4>${INFO.description}</h4>
 
-In case of complex equations, you can use PUT /evaluate endpoint and put your data in JSON payload,
-under keys "expression" and "values".
+<p>Call GET /evaluate/:expression to evaluate your expression. Variables can go to query params.</p>
+
+<p>In case of complex equations, you can use PUT /evaluate endpoint and put your data in JSON payload,
+under keys "expression" and "values".</p>
+
+<h4>Syntax:</h4>
+
+<div><pre>${INFO.syntax}</pre></div>
+</body>
+</html>
 `
     );
   });

@@ -34,4 +34,17 @@ program
     lib.evaluateToStdOut(expression, values, program.debug);
   });
 
+program.on('--help', () => {
+  console.log();
+  console.log('  Syntax:');
+  console.log();
+  console.log(
+    lib.INFO.syntax
+      .split('\n')
+      .map(line => '    ' + line)
+      .join('\n')
+  );
+  console.log();
+});
+
 program.parse(process.argv);

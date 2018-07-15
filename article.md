@@ -24,9 +24,7 @@ Command|What happens
 `app serve -p 12345`|Start expression evaluator web server. Note that -p argument only makes sense here. It shouldn't be applicable to the CLI use case.
 
 
-## Contenders
-
-### commander.js
+## commander.js
 
 `commander` | [![github](static/github.png)](https://github.com/tj/commander.js) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/commander)
 |-----|----|
@@ -64,6 +62,14 @@ Downsides:
 
 - Clumsy way to specify long and short parameter names (you can't have a short option without a corresponding long version)
 - No concept of default value. You have to insert it into the help text manually (eg. `.option('-p, --port', 'Port to serve on (default: 3000)')`)
+- Git-style subcommands were a design mistake.
+- Ugly help screen for "*" commands.
+
+Conclusion:
+
+A decent choice, but surely we can do better?
+
+![](static/commander.png)
 
 ## Rejected contenders
 
