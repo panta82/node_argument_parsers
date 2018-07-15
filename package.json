@@ -1,0 +1,23 @@
+{
+  "name": "node_argument_parsers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "commander": "^2.16.0",
+    "cors": "^2.8.4",
+    "expr-eval": "^1.2.2",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.pantas.net:articles/node_argument_parsers.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

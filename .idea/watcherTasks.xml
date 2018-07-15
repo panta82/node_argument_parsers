@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectTasksOptions">
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="--write $FilePath$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="js" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Prettier JS" />
+      <option name="output" value="" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PROJECT_DIR$/../../c-code/spinview/webui/node_modules/.bin/prettier" />
+      <option name="runOnExternalChanges" value="false" />
+      <option name="scopeName" value="Current File" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$ProjectFileDir$" />
+      <envs>
+        <env name="PATH" value="$USER_HOME$/.nvm/versions/node/v8.9.4/bin:/home/panta/swift/bin:/home/panta/.rvm/gems/ruby-2.4.1/bin:/home/panta/.rvm/gems/ruby-2.4.1@global/bin:/home/panta/.rvm/rubies/ruby-2.4.1/bin:/home/panta/local/bin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/go/bin:/home/panta/.pyenv/bin:/home/panta/.rvm/bin:/home/panta/.composer/vendor/bin:/home/panta/dev/pantas/pp-tools " />
+      </envs>
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="--write $FilePath$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="less" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Prettier LESS" />
+      <option name="output" value="" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PROJECT_DIR$/../../c-code/spinview/webui/node_modules/.bin/prettier" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="Current File" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$ProjectFileDir$" />
+      <envs>
+        <env name="PATH" value="$USER_HOME$/.nvm/versions/node/v8.9.4/bin:/home/panta/swift/bin:/home/panta/.rvm/gems/ruby-2.4.1/bin:/home/panta/.rvm/gems/ruby-2.4.1@global/bin:/home/panta/.rvm/rubies/ruby-2.4.1/bin:/home/panta/local/bin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/go/bin:/home/panta/.pyenv/bin:/home/panta/.rvm/bin:/home/panta/.composer/vendor/bin:/home/panta/dev/pantas/pp-tools " />
+      </envs>
+    </TaskOptions>
+  </component>
+</project>
