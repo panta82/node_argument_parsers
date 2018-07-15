@@ -5,10 +5,12 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "caporal": "^0.10.0",
     "commander": "^2.16.0",
     "cors": "^2.8.4",
     "expr-eval": "^1.2.2",
     "express": "^4.16.3",
+    "optionator": "^0.8.2",
     "yargs": "^12.0.1"
   },
   "devDependencies": {},

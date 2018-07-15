@@ -100,6 +100,38 @@ Couldn't get it to display full help in case command was called without an expre
 
 It has bash completion. You have to attach it to every command you want to complete and add it to environment, but it works.
 
+## Caporal
+
+`caporal` | [![github](static/github.png)](https://github.com/mattallty/Caporal.js) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/caporal)
+|-----|----|
+Stars | 2,683
+Forks | 92
+Downloads / week | 15,564
+Dependencies | [11 / 80](http://npm.broofa.com/?q=caporal)
+Licenses | None, Apache-2.0ISC, MIT
+
+> A full-featured framework for building command line applications (cli) with node.js, including help generation, colored output, verbosity control, custom logger, coercion and casting, typos suggestions, and auto-complete for bash/zsh/fish.
+
+Why would you need a framework for parsing command line arguments? Let's find out.
+
+There is no code outside caporal. All your code should live in action() callbacks that are triggered based on CLI commands.
+
+There is no way to write anything beneath the global command line switches in options. Also, there is no way to get a hook into the help system through an event or similar mechanism. AND you can't disable auto-help and display the help manually. I ended up just adding a "SYNTAX" section that is printed out right above the global options. That's framework for you. Their way or the highway.
+
+I decided to use their API surface, with `--verbose,-v` and `--silent` switches, instead of my intended `-dd` api.
+
+There doesn't seem to be an option for `-dd` flag aggregation. It only supports `-d -d` which is lame.
+
+Incomplete documentation. Had to dig through source code multiple times.
+
+Super goofy error message when you call the program without arguments:
+`Error: Wrong number of argument(s). Got 0, expected between 1 and Infinity.`
+There doesn't seem to be a way to customize it.
+
+It has auto-completion, but I couldn't get it to work.
+
+Overall it's usable and help messages are beautiful. But being a framework seriously limits it. If you like the choices its authors made, it's a solid choice.
+
 ## Rejected contenders
 
 ### Minimist
@@ -132,3 +164,19 @@ $ node example/parse.js -a beep -b boop
 Instead of giving it option definitions, you just call it against arguments and it then tries to guess what they mean and packages them into an object. So, no varargs, no help screens, no validation. I'd have to build all of that manually on top of it.
 
 I've decided that's too barebones for what I want out of an argument parser library. Therefore minimist is out. Buckle up, it won't be the last one to go due to this reason.
+
+### Nopt
+
+`nopt` | [![github](static/github.png)](https://github.com/npm/nopt) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/nopt)
+|-----|----|
+Stars | 460
+Forks | 35
+Downloads / week | 7,145,337
+Dependencies | [2/4](http://npm.broofa.com/?q=nopt)
+Licenses | MIT
+
+What's this? Relatively few github stars, but tons of npm downloads? Turns out, this is the lib that npm.js developed internally to handle parsing for their npm utility (that's why the download count).
+
+> If you want to write an option parser, don't write an option parser. Write a package manager, or a source control system, or a service restarter, or an operating system. You probably won't end up with a good one of those, but if you don't give up, and you are relentless and diligent enough in your procrastination, you may just end up with a very nice option parser.
+
+Unfortunately, even though it has predefined argument definitions, it doesn't seem to have a help layer at all. A weird in-house-ish project that never caught on, doesn't get updated often and should probably be avoided.

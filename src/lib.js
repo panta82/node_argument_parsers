@@ -94,7 +94,7 @@ function serve(port, debugLevel = DEFAULTS.debug) {
     res.send(
       `
 <html>
-<head>${INFO.title}</head>
+<head><title>${INFO.title}</title></head>
 <body>
 <h1>${INFO.title}</h1>
 
@@ -140,6 +140,10 @@ under keys "expression" and "values".</p>
 }
 
 function valuesFromPairs(valuePairs) {
+  if (!valuePairs.length) {
+    return undefined;
+  }
+
   const values = valuePairs.reduce((res, pair) => {
     const [key, val] = pair.split('=').map(x => x.trim());
     res[key] = val;
