@@ -9,6 +9,8 @@ program
   .description(lib.INFO.description)
   .option('-d, --debug', 'Debug mode (add twice for verbose debug)', (_, debug) => debug + 1, 0);
 
+let executed = false;
+
 program
   .command('serve')
   .description('Start the server')
@@ -18,6 +20,7 @@ program
     p => Number(p) || undefined
   )
   .action(cmd => {
+    executed = true;
     lib.serve(cmd.port, program.debug);
   });
 
@@ -25,12 +28,8 @@ program
   .command('* <expression> [values...]')
   .description(`Evaluate the expression supplied through CLI`)
   .action((expression, valuePairs) => {
-    const values = valuePairs.reduce((res, pair) => {
-      const [key, val] = pair.split('=').map(x => x.trim());
-      res[key] = val;
-      return res;
-    }, {});
-
+    executed = true;
+    const values = lib.valuesFromPairs(valuePairs);
     lib.evaluateToStdOut(expression, values, program.debug);
   });
 
@@ -48,3 +47,7 @@ program.on('--help', () => {
 });
 
 program.parse(process.argv);
+
+if (!executed) {
+  program.outputHelp();
+}

@@ -55,7 +55,8 @@ Upsides:
 - Has commands and default commands
 - Has auto-help generation with description and version number
 - You can collect multiple arguments using reduce-like syntax (very neat)
-- Very good typings
+- Good typings support, out of the box
+- No dependencies
 
 
 Downsides:
@@ -64,12 +65,40 @@ Downsides:
 - No concept of default value. You have to insert it into the help text manually (eg. `.option('-p, --port', 'Port to serve on (default: 3000)')`)
 - Git-style subcommands were a design mistake.
 - Ugly help screen for "*" commands.
+- Varargs not displayed in help, need to describe them manually.
+- No way to tell when none of the commmands have executed (`executed` variable)
 
 Conclusion:
 
 A decent choice, but surely we can do better?
 
 ![](static/commander.png)
+
+## Yargs
+
+`yargs` | [![github](static/github.png)](https://github.com/yargs/yargs) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/yargs)
+|-----|----|
+Stars | 4,837
+Forks | 415
+Downloads / week | 17,128,896
+Dependencies | [12 / 50](http://npm.broofa.com/?q=yargs)
+Licenses | ISC, MIT
+
+"Pirate themed". A bit goofy. A LOT of options.
+
+It seems it recently had a refactoring, so some of the examples are outdated.
+
+Difficult to find my way around the help. Probably because there are so many features.
+Example: variadic positional arguments are only mentioned briefly in the advanced usage guide, nowhere are they mentioned in the central API docs.
+I have decided to use object-notation to define all the arguments and their switches.
+
+No preambule text available.
+
+Help for commands is not displayed directly on the screen. User has to do "`program command -h`" in order to get help. That is not clearly indicated anywhere on the screen.
+
+Couldn't get it to display full help in case command was called without an expression. Had to do a hacky console.log.
+
+It has bash completion. You have to attach it to every command you want to complete and add it to environment, but it works.
 
 ## Rejected contenders
 

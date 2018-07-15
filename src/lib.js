@@ -139,10 +139,21 @@ under keys "expression" and "values".</p>
   });
 }
 
+function valuesFromPairs(valuePairs) {
+  const values = valuePairs.reduce((res, pair) => {
+    const [key, val] = pair.split('=').map(x => x.trim());
+    res[key] = val;
+    return res;
+  }, {});
+  return values;
+}
+
 module.exports = {
   INFO,
   DEFAULTS,
 
   evaluateToStdOut,
   serve,
+
+  valuesFromPairs,
 };
