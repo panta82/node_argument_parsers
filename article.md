@@ -132,6 +132,46 @@ It has auto-completion, but I couldn't get it to work.
 
 Overall it's usable and help messages are beautiful. But being a framework seriously limits it. If you like the choices its authors made, it's a solid choice.
 
+## Optionator
+
+`optionator` | [![github](static/github.png)](https://github.com/gkz/optionator) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/optionator)
+|-----|----|
+Stars | 98
+Forks | 7
+Downloads / week | 3,918,677
+Dependencies | [6](http://npm.broofa.com/?q=optionator)
+Licenses | MIT
+
+> Optionator is a JavaScript/Node.js option parsing and help generation library used by eslint, Grasp, LiveScript, esmangle, escodegen, and many more.
+
+Small amount of stars and a huge number of downloads indicate an internal-ish library used by a small "cabal" of popular libraries. It hasn't been updated since 2016, but that's not necessarily a deal killer. Sometimes, software is just "complete".
+
+> The problem with other option parsers, such as yargs or minimist, is they just accept all input, valid or not. With Optionator, if you mistype an option, it will give you an error (with a suggestion for what you meant). If you give the wrong type of argument for an option, it will give you an error rather than supplying the wrong input to your application.
+>  
+>  ```
+>  `$ cmd --halp
+>  Invalid option '--halp' - perhaps you meant '--help'?
+>  ```
+>
+>  ```
+>  $ cmd --count str
+>  Invalid value for option 'count' - expected type Int, received value: str.
+>  ```
+
+I find this not to be all that useful.
+
+Doesn't have support for commands. I'll have to trigger my server using switches.
+
+Can't count repeated flags. Had to use `--dd` instead of `-dd`.
+
+`String(lib.DEFAULTS.port)` Must cast to string, why?
+
+A lot of custom help text in `prepend` and `append`.
+
+Full of quirky options that seem to have been added based on current needs of its patreon projects instead of meaningful top-down planning.
+
+The library does its job fine, but there is nothing in particular to recommend it over the others.
+
 ## Rejected contenders
 
 ### Minimist
