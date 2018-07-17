@@ -185,6 +185,8 @@ Licenses | MIT
 
 Super fancy, has its logo and [site](http://sywac.io/). Yet, completely obscure (few stars and downloads).
 
+Its api is heavily inspired by yargs.
+
 Poor intellisense support. No typings, no good JSDoc annotations.
 
 Documentation is intended to be the most ambitious one yet. But as it stands now, it's only half-completed.
@@ -204,9 +206,33 @@ Also, it kind of screws up the operation of the `serve` command. I've decided op
 
 It supports varargs as the last argument, but for some reason it returns `[undefined]` in case none are given. Client code has to make up for it.
 
-It has decent help output, with defaults and types. There are a lot of other options there, but due to incomplete state of documentation, I never got to experience them all.
+It has decent help output, with defaults and types. There are a lot of other options there. For example, it offers hook allowing you to colorize each element of the help screen (that *does* seem to be going a bit far). Due to incomplete state of documentation, I suspect there are at least some nuances I am missing here.
 
 Nice and ambitious attempt, but due to bugs, incomplete documentation and low bus factor, I can't recommend this lib.
+
+### Sade
+
+`sade` | [![github](static/github.png)](https://github.com/lukeed/sade) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/sade)
+|-----|----|
+Stars | 336
+Forks | 12
+Downloads / week | 1,412
+Dependencies | [2/3](http://npm.broofa.com/?q=sade)
+Licenses | MIT
+
+> Your app's UX will be as smooth as butter... just like Sade's voice.
+
+The author is a fan of Sade.
+
+Based on mri.
+
+It has a default command, but doesn't make it clear in the help text. It's rather jarring.
+
+It doesn't support variadic arguments directly, but I found a way to hack it in using "fake" variadic placeholder.
+
+It doesn't support counting flags, but it will group up to two flags into an array like `[true true]` (but *only* two; any further flags are ignored). This is not indicated in the rather barebones single-page documentation page.
+
+There doesn't seem to be a way to insert own texts (like software description or syntax info) into the help sections.
 
 ## Rejected contenders
 
@@ -256,3 +282,15 @@ What's this? Relatively few github stars, but tons of npm downloads? Turns out, 
 > If you want to write an option parser, don't write an option parser. Write a package manager, or a source control system, or a service restarter, or an operating system. You probably won't end up with a good one of those, but if you don't give up, and you are relentless and diligent enough in your procrastination, you may just end up with a very nice option parser.
 
 Unfortunately, even though it has predefined argument definitions, it doesn't seem to have a help layer at all. A weird in-house-ish project that never caught on, doesn't get updated often and should probably be avoided.
+
+### Gar
+
+`gar` | [![github](static/github.png)](https://github.com/ethanent/gar) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/gar)
+|-----|----|
+Stars | 24
+Forks | 2
+Downloads / week | 11,787
+Dependencies | [0](http://npm.broofa.com/?q=gar)
+Licenses | MIT
+
+"Like minimist and optimist, only even smaller (4kb)". It gets disqualified for the same reasons as mininist.

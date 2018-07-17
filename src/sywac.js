@@ -11,6 +11,8 @@ sywac
   .outputSettings({ maxWidth: 100 })
   .showHelpByDefault()
 
+  .preface(lib.INFO.description)
+
   .command('serve', {
     desc: 'Start the server',
     setup: sywac => {
@@ -41,5 +43,13 @@ sywac
       lib.evaluateToStdOut(argv.expression, values, argv.debug.length);
     },
   })
+
+  .epilogue(
+    'Syntax:\n' +
+      lib.INFO.syntax
+        .split('\n')
+        .map(line => '  ' + line)
+        .join('\n')
+  )
 
   .parseAndExit();
