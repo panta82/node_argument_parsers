@@ -140,7 +140,7 @@ under keys "expression" and "values".</p>
 }
 
 function valuesFromPairs(valuePairs) {
-  if (!valuePairs.length) {
+  if (!valuePairs || !valuePairs.length) {
     return undefined;
   }
 

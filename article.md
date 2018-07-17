@@ -172,6 +172,42 @@ Full of quirky options that seem to have been added based on current needs of it
 
 The library does its job fine, but there is nothing in particular to recommend it over the others.
 
+
+## Sywac
+
+`sywac` | [![github](static/github.png)](https://github.com/sywac/sywac) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/sywac)
+|-----|----|
+Stars | 42
+Forks | 1
+Downloads / week | 1,760
+Dependencies | [0](http://npm.broofa.com/?q=sywac)
+Licenses | MIT
+
+Super fancy, has its logo and [site](http://sywac.io/). Yet, completely obscure (few stars and downloads).
+
+Poor intellisense support. No typings, no good JSDoc annotations.
+
+Documentation is intended to be the most ambitious one yet. But as it stands now, it's only half-completed.
+
+There is no aggregation type. I had to declare `-d` as `array` type, which kind of works but generates an ugly help text.
+
+Has a concept of "default command", but neither it nor its parameters are displayed anywhere on the help screen. User would have no idea it even exists. This feature frankly seems broken.
+
+One variant would be `app eval x+y`, which is meh. The other would be to add expression and values it as ordinary top-level switches, but in that case, I get help like this:
+```text
+Usage: sywac <expression> [options]
+
+Commands:
+  serve  Start the server
+```
+Also, it kind of screws up the operation of the `serve` command. I've decided option 1 is the lesser evil.
+
+It supports varargs as the last argument, but for some reason it returns `[undefined]` in case none are given. Client code has to make up for it.
+
+It has decent help output, with defaults and types. There are a lot of other options there, but due to incomplete state of documentation, I never got to experience them all.
+
+Nice and ambitious attempt, but due to bugs, incomplete documentation and low bus factor, I can't recommend this lib.
+
 ## Rejected contenders
 
 ### Minimist
