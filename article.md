@@ -234,6 +234,34 @@ It doesn't support counting flags, but it will group up to two flags into an arr
 
 There doesn't seem to be a way to insert own texts (like software description or syntax info) into the help sections.
 
+It's a decent library, but it doesn't offer enough to recommend it over its more popular counterparts.
+
+### command-line-args
+
+`command-line-args` | [![github](static/github.png)](https://github.com/75lb/command-line-args) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/command-line-args)
+|-----|----|
+Stars | 296
+Forks | 37
+Downloads / week | 143,876
+Dependencies | [4/6 (+15 - for companion lib)](http://npm.broofa.com/?q=command-line-args)
+Licenses | MIT
+
+Comes with a companion lib [command-line-usage](https://github.com/75lb/command-line-usage), used to generate help output. A good split.
+
+It doesn't have "native" support for commands, but it gives you enough flexibility to execute it. More than any other library here, acts like a tool in your hands to use it how you will.
+
+Pretty good documentation, with both example usage code and API listings.
+
+Nice help screen. I like the flexibility and option to add custom help sections. I wish they'd allow adding multiple sections under one header (eg. an intro text, a table, a final remark).
+
+There are no positional arguments. I had to implement my own on top of the library, using its primitives.
+
+No attention was put into user feedback. The library throws ugly errors and, once again, its up to my code to catch them and make something user-friendly out of them.
+
+I played around with banners a bit and found the visuals nice, but alignment a bit buggy if you're using `\` characters anywhere inside the ASCII art. 
+
+Overall, this library is something between minimist and full-featured libraries like yargs. It gives you a nice set of tools, and leaves you to your own accords to craft the CLI interface you like. A lot of freedom and a decent amount of options (with a few notable ones missing), at the cost of more code you have to write. Recommend it if you have particular custom needs and/or have the time to fiddle a bit and get things exactly how you like them.
+
 ## Rejected contenders
 
 ### Minimist

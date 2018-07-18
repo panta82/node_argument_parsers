@@ -6,6 +6,8 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "caporal": "^0.10.0",
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5",
     "commander": "^2.16.0",
     "cors": "^2.8.4",
     "expr-eval": "^1.2.2",
