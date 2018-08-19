@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "argparse": "^1.0.10",
     "body-parser": "^1.18.3",
     "caporal": "^0.10.0",
     "command-line-args": "^5.0.2",

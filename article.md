@@ -26,7 +26,7 @@ Command|What happens
 
 ## commander.js
 
-`commander` | [![github](static/github.png)](https://github.com/tj/commander.js) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/commander)
+`commander` | [![github](static/github.png)](https://github.com/tj/commander.js) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/commander)
 |-----|----|
 Stars | 11,869
 Forks | 907
@@ -76,7 +76,7 @@ A decent choice, but surely we can do better?
 
 ## Yargs
 
-`yargs` | [![github](static/github.png)](https://github.com/yargs/yargs) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/yargs)
+`yargs` | [![github](static/github.png)](https://github.com/yargs/yargs) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/yargs)
 |-----|----|
 Stars | 4,837
 Forks | 415
@@ -102,7 +102,7 @@ It has bash completion. You have to attach it to every command you want to compl
 
 ## Caporal
 
-`caporal` | [![github](static/github.png)](https://github.com/mattallty/Caporal.js) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/caporal)
+`caporal` | [![github](static/github.png)](https://github.com/mattallty/Caporal.js) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/caporal)
 |-----|----|
 Stars | 2,683
 Forks | 92
@@ -134,7 +134,7 @@ Overall it's usable and help messages are beautiful. But being a framework serio
 
 ## Optionator
 
-`optionator` | [![github](static/github.png)](https://github.com/gkz/optionator) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/optionator)
+`optionator` | [![github](static/github.png)](https://github.com/gkz/optionator) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/optionator)
 |-----|----|
 Stars | 98
 Forks | 7
@@ -175,7 +175,7 @@ The library does its job fine, but there is nothing in particular to recommend i
 
 ## Sywac
 
-`sywac` | [![github](static/github.png)](https://github.com/sywac/sywac) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/sywac)
+`sywac` | [![github](static/github.png)](https://github.com/sywac/sywac) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/sywac)
 |-----|----|
 Stars | 42
 Forks | 1
@@ -212,7 +212,7 @@ Nice and ambitious attempt, but due to bugs, incomplete documentation and low bu
 
 ### Sade
 
-`sade` | [![github](static/github.png)](https://github.com/lukeed/sade) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/sade)
+`sade` | [![github](static/github.png)](https://github.com/lukeed/sade) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/sade)
 |-----|----|
 Stars | 336
 Forks | 12
@@ -238,7 +238,7 @@ It's a decent library, but it doesn't offer enough to recommend it over its more
 
 ### command-line-args
 
-`command-line-args` | [![github](static/github.png)](https://github.com/75lb/command-line-args) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/command-line-args)
+`command-line-args` | [![github](static/github.png)](https://github.com/75lb/command-line-args) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/command-line-args)
 |-----|----|
 Stars | 296
 Forks | 37
@@ -258,15 +258,39 @@ There are no positional arguments. I had to implement my own on top of the libra
 
 No attention was put into user feedback. The library throws ugly errors and, once again, its up to my code to catch them and make something user-friendly out of them.
 
-I played around with banners a bit and found the visuals nice, but alignment a bit buggy if you're using `\` characters anywhere inside the ASCII art. 
+I played around with banners a bit and found the visuals nice, but alignment a bit buggy if you're using `\` characters anywhere inside the ASCII art.
 
 Overall, this library is something between minimist and full-featured libraries like yargs. It gives you a nice set of tools, and leaves you to your own accords to craft the CLI interface you like. A lot of freedom and a decent amount of options (with a few notable ones missing), at the cost of more code you have to write. Recommend it if you have particular custom needs and/or have the time to fiddle a bit and get things exactly how you like them.
+
+### argparse
+
+`argparse v1.0.10` | [![github](static/github.png)](https://github.com/nodeca/argparse) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/argparse)
+|-----|----|
+Stars | 262
+Forks | 35
+Downloads / week | 5,544,037
+Dependencies | [1](http://npm.broofa.com/?q=argparse)
+Licenses | BSD-3-Clause, MIT
+
+> Javascript port of python's argparse module (original version 3.2). 
+
+A lot of NPM usage, but not that much github action.
+
+Excellent support for counted flags out of the box.
+
+Has epilog section built in, but it's doing some post processing on it that crashes because of the '%' sign in my syntax help text. Also, it strips away any formatting and smushes everything into one line. Because of this, I had to disable default `--help` handling and implement my own, which luckily worked just fine.
+
+There is a typings library that adds good code completition help.
+
+The most fiddly and unfun to use API of all the command parsers. Option names are unintuitive and unmemorable. Fluid interface would be a big win, but it's not there.
+
+Has command architecture. I am not thrilled with the way help and commands are presented. 
 
 ## Rejected contenders
 
 ### Minimist
 
-`minimist` | [![github](static/github.png)](https://github.com/substack/minimist) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/minimist)
+`minimist` | [![github](static/github.png)](https://github.com/substack/minimist) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/minimist)
 |-----|----|
 Stars | 3,055
 Forks | 172
@@ -297,7 +321,7 @@ I've decided that's too barebones for what I want out of an argument parser libr
 
 ### Nopt
 
-`nopt` | [![github](static/github.png)](https://github.com/npm/nopt) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/nopt)
+`nopt` | [![github](static/github.png)](https://github.com/npm/nopt) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/nopt)
 |-----|----|
 Stars | 460
 Forks | 35
@@ -313,7 +337,7 @@ Unfortunately, even though it has predefined argument definitions, it doesn't se
 
 ### Gar
 
-`gar` | [![github](static/github.png)](https://github.com/ethanent/gar) &nbsp; [![github](static/npm.png)](https://www.npmjs.com/package/gar)
+`gar` | [![github](static/github.png)](https://github.com/ethanent/gar) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/gar)
 |-----|----|
 Stars | 24
 Forks | 2
