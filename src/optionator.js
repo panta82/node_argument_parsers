@@ -55,7 +55,15 @@ ${lib.INFO.syntax
   ],
 });
 
-const options = optionator.parseArgv(process.argv);
+let options;
+try {
+	options = optionator.parseArgv(process.argv);
+}
+catch (err) {
+	console.log(err.message);
+	process.exit(1);
+}
+
 if (options.help) {
   showHelp();
 }
