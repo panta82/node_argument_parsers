@@ -856,6 +856,8 @@ function showHelp() {
 
 ![](static/command-line-args.png)
 
+#### Thoughts
+
 - Very nice help screen. I appreciate the suport for adding custom help sections. I only wish they'd allow adding multiple sections under one header (eg. an intro text, a table, a final remark). 
 
 - Documentation is pretty good, they have both example usage code and API listings.
@@ -882,22 +884,116 @@ Downloads / week | 5M
 Dependencies | [1](http://npm.broofa.com/?q=argparse)
 Licenses | BSD-3-Clause, MIT
 
-A port of python's argparse module (original version 3.2). I actually have some experience with this library, having used it in a previous project. Let's see how it changed.
+An older library, port of python's `argparse` module. I actually have some experience with this library, having used it in a previous project. I remember it being powerful, but difficult to use due to poor API and documentation. Let's see if anything has changed (spoiler alert: nope).
+
+```javascript
+#!/usr/bin/env node
+
+const { ArgumentParser, Const } = require('argparse');
+
+const lib = require('./lib');
+
+const parser = new ArgumentParser({
+  version: require('../package').version,
+  addHelp: true,
+  description: lib.INFO.description,
+});
+
+parser.formatHelp = ((pFormatHelp) => {
+	return function () {
+		return pFormatHelp()
+			+ '\nSyntax:\n'
+			+ lib.INFO.syntax
+				.split('\n')
+				.map(line => '  ' + line)
+				.join('\n')
+			+ '\n'
+	};
+})(
+	parser.formatHelp.bind(parser)
+);
+
+parser.addArgument(['-d', '--debug'], {
+  help: `Debug mode (add twice for verbose debug`,
+  defaultValue: 0,
+  action: 'count',
+});
+
+const subparsers = parser.addSubparsers({
+  title: 'Commands',
+  dest: 'command',
+	help: 'Command to execute. Call with "-h" for details.',
+	required: false
+});
+
+const serve = subparsers.addParser('serve', {
+  addHelp: true,
+});
+
+serve.addArgument(['-p', '--port'], {
+  help: 'Port to serve on',
+  defaultValue: lib.DEFAULTS.port,
+});
+
+const eval = subparsers.addParser('eval', {
+	addHelp: true,
+});
+
+eval.addArgument('expression', {
+	help: 'Expression to evaluate',
+	nargs: 1
+});
+
+eval.addArgument('values', {
+	help: 'Values to use, in format name=value (eg. x=2)',
+	nargs: '*'
+});
+
+const args = parser.parseArgs();
+
+if (args.command === 'serve') {
+	lib.serve(args.port, args.debug);
+}
+else if (args.command === 'eval') {
+	const values = lib.valuesFromPairs(args.values);
+	lib.evaluateToStdOut(args.expression[0], values);
+}
+```
+
+![](static/argparse.png)
+
+#### Thoughts
+
+- As I remembered, argparse is a very full-featured library, with support for commands, flag counting, type casting and aggregation.
+
+- There is a lot of NPM usage, but not that much github action, indicating a library that is used internally by more popular libraries but not so much by a wider community. 
+
+- There is a typings library that adds some code completition help. Unfortunately, some options are only given as magic strings, that you have to hunt on their (bad) documentation page (more on that below).
+
+- In general, Argparse has the most fiddly and unfun to use API of all the command parsers I have tried. Option names are unintuitive and unmemorable. You have to call many methods in a procedural fashion, without a fluid interface. I remember making a declarative configuration layer around it the last time I used it in production.
+
+- As mentioned, documentation is pretty bad and incomplete. Only the basics are covered in the library's README file. For the rest, you are directed to the [python version's docs](https://docs.python.org/3/library/argparse.html#action), which while complete, require you to mentally translate between python and nodejs conventions.
+
+- Help output is mediocre. It doesn't show the defaults, or any other metadata it has about flags. It shows subcommands as a single one-liner, without additional details for each command.
+
+- Global arguments must be given before commands. For example, I can call `app -dd serve`, but not `app serve -dd`. Makes sense technically, but I'd stil like more flexibility there.  
+
+- Argparse has an "eplilogue" option, but I couldn't get it to work for my use case. It was obviously meant for simpler one-line texts. It hopelessly choked on and mangled my multi-line syntax help. I ended up shimming their help formatter function to add my own custom epilogue.
+  
+  As a sidenote, the internals of the library and pretty clean and well documented, making it relatively easy to hack around.
+
+#### Conclusion
+
+Powerful and stable library, but with mediocre docs and help output. There are better libraries around with similar features.
+
+
+ 
 
 
 
 
-A lot of NPM usage, but not that much github action.
 
-Excellent support for counted flags out of the box.
-
-Has epilog section built in, but it's doing some post processing on it that crashes because of the '%' sign in my syntax help text. Also, it strips away any formatting and smushes everything into one line. Because of this, I had to disable default `--help` handling and implement my own, which luckily worked just fine.
-
-There is a typings library that adds good code completition help.
-
-The most fiddly and unfun to use API of all the command parsers. Option names are unintuitive and unmemorable. Fluid interface would be a big win, but it's not there.
-
-Has command architecture. I am not thrilled with the way help and commands are presented. 
+  
 
 
 -----------------------------

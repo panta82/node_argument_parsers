@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { ArgumentParser } = require('argparse');
+const { ArgumentParser, Const } = require('argparse');
 
 const lib = require('./lib');
 
@@ -9,6 +9,20 @@ const parser = new ArgumentParser({
   addHelp: true,
   description: lib.INFO.description,
 });
+
+parser.formatHelp = ((pFormatHelp) => {
+	return function () {
+		return pFormatHelp()
+			+ '\nSyntax:\n'
+			+ lib.INFO.syntax
+				.split('\n')
+				.map(line => '  ' + line)
+				.join('\n')
+			+ '\n'
+	};
+})(
+	parser.formatHelp.bind(parser)
+);
 
 parser.addArgument(['-d', '--debug'], {
   help: `Debug mode (add twice for verbose debug`,
@@ -47,66 +61,11 @@ eval.addArgument('values', {
 });
 
 const args = parser.parseArgs();
-if (args.help) {
-  parser.printHelp();
-  console.log('\nSyntax help:');
-  console.log(
-    lib.INFO.syntax
-      .split('\n')
-      .map(line => '  ' + line)
-      .join('\n')
-  );
-  process.exit(0);
+
+if (args.command === 'serve') {
+	lib.serve(args.port, args.debug);
 }
-
-console.log(args);
-
-/*
-program
-  .version(require('../package').version)
-  .description(lib.INFO.description)
-  .option('-d, --debug', 'Debug mode (add twice for verbose debug)', (_, debug) => debug + 1, 0);
-
-let executed = false;
-
-program
-  .command('serve')
-  .description('Start the server')
-  .option(
-    '-p, --port <port>',
-    `Port to serve on (default: ${lib.DEFAULTS.port})`,
-    p => Number(p) || undefined
-  )
-  .action(cmd => {
-    executed = true;
-    lib.serve(cmd.port, program.debug);
-  });
-
-program
-  .command('* <expression> [values...]')
-  .description(`Evaluate the expression supplied through CLI`)
-  .action((expression, valuePairs) => {
-    executed = true;
-    const values = lib.valuesFromPairs(valuePairs);
-    lib.evaluateToStdOut(expression, values, program.debug);
-  });
-
-program.on('--help', () => {
-  console.log();
-  console.log('  Syntax:');
-  console.log();
-  console.log(
-    lib.INFO.syntax
-      .split('\n')
-      .map(line => '    ' + line)
-      .join('\n')
-  );
-  console.log();
-});
-
-program.parse(process.argv);
-
-if (!executed) {
-  program.outputHelp();
+else if (args.command === 'eval') {
+	const values = lib.valuesFromPairs(args.values);
+	lib.evaluateToStdOut(args.expression[0], values);
 }
-*/
