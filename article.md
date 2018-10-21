@@ -1,22 +1,32 @@
-# Node.js argument parsers in 2018
+# Node.js argument parsers in 2018 - yargs VS commander VS caporal VS others 
 
-Recently, I was in a need of a command line argument parser to use for node.js tooling at the dayjob. In some node.js problem spaces, there is a clear winner; one library that is the default golden path for most developers, for most use cases. For example, [express.js](https://expressjs.com/) for web servers or [moment.js](https://momentjs.com/) for date/time manipulation. That doesn't seem to be the case for command line parsers.
+Recently, I was in a need of a command line argument parser to use for the tooling I was building at the dayjob. In some node.js problem spaces, there is a clear winner; one library that is the default golden path for most developers, in most use cases. For example, [express.js](https://expressjs.com/) for web servers or [moment.js](https://momentjs.com/) for date/time manipulation. That doesn't seem to be the case for command line parsers.
 
 Over time, different contenders seem to have come into prominence and then faded away. It's not clear which one is currently "the best", if there can even be such a thing, or at least the accepted standard. So I decided to do a little cross-comparison test.
 
 ## Testing method
 
-To test different argument parsers, we need a program they will parse the arguments for. I have opted for a simple math expression evaluator. You call it with an expression (eg. given `x=5`, calculate `(2 + x) / 3`) and it spits out the result to console or serve it on the web, depending on arguments.
+To test different argument parsers, we need a program they will parse the arguments for. I have opted for a simple math expression evaluator. You call it with an expression (eg. given `x=5`, calculate `(2 + x) / 3`) and it spits out the result to a console or serve it on the web, depending on arguments.
 
-Here is the interface I'd like to support:
+Here is the interface I'd like to support.
 
-Command|What happens
--------|------------
-`app -h`|Help screen is shown. It should also work with `--help`.
-`app '(x*5)/y'`|Start the app in STDIN mode. Given expression will be executed for each input line (treated as CSV of values in the order they appear inside the expression)
-`app '(x*5)/y' x=5 y=7`|In this mode, the command is immediately executed using any number of `var=value` arguments that come at the end.
-`app -dd`|Start the app in verbose debug mode (`-d` for normal debug mode). This switch should apply globally, for either web server or CLI use case.
-`app serve -p 12345`|Start expression evaluator web server, listening on port `12345`. Note that -p argument only makes sense here. It shouldn't be applicable to the CLI use case.
+- `app` or `app -h` or `app --help`  
+  Show help screen. All flags and commands must be shown here. The expression evaluator has its own syntax, which I want displayed here as well, in some kind of a "footer" section. 
+
+- `app '(x*5)/y'`  
+  The sole argument is treated as expression. Program will read arguments `x` and `y` from STDIN. Each input line is parsed, evaluated and result printed out, one by one.
+
+- `app '(x*5)/y' x=5 y=7`  
+  In this case, program should read and parse arguments `x=5` and `y=7` as values for the expression. So expression should be immediately executed, and the result printed out. Note that the argument parser must be able to read the first positional argument as "expression" and all the rest as an array of "values".
+
+- `app eval '(x*5)/y' x=5 y=7`  
+  The equivalent of the above command. Basically, the `eval` command should be the default command, to be executed *unless* some other command is present.
+
+- `app serve -p 12345` or `app serve --port 12345`  
+  Start expression evaluator web server, listening on port `12345`. Note that -p argument only makes sense here. It shouldn't be applicable to the CLI use case. Port has a *default value* (3000), that should be honored in the parsing AND the help screen.
+
+- `app -d` or `app -dd`  
+  Start the app in verbose debug mode or super-verbose mode (each `d` increases verbosity). This switch should apply globally, for either web server or CLI use case.
 
 For each parser, I will write an app implementing the interface above or a close approximation of it (I will allow deviations from the API, as long as the full functionality is covered).
  
@@ -39,6 +49,7 @@ module.exports = {
   DEFAULTS,
 
   // Call this method to evaluate an expression and write the result to STDOUT
+  // Will also handle reading from STDIN, in case some values are missing.
   evaluateToStdOut,
   
   // Call this method to start a web server
@@ -49,72 +60,13 @@ module.exports = {
 };
 ```
 
-## Rejected candidates
-
-Before I go through the main contenders, I'll go through the ones I have rejected based on reading the documentation and fiddling a bit, but without writing the actual test program.
-
-### Minimist
-
-`minimist` | [![github](static/github.png)](https://github.com/substack/minimist) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/minimist)
-|-----|----|
-Stars | 3,055
-Forks | 172
-Downloads / week | 13,222,137
-Dependencies | [0](http://npm.broofa.com/?q=minimist)
-Licenses | MIT
-
-A venerable and extremely popular library. It has two problems, though:
-
-1. Last updated in 2015
-2. No option definitions at all
-
-To clarify the second point, you use minimist like this:
-
-```javascript
-var argv = require('minimist')(process.argv.slice(2));
-console.dir(argv);
-```
-
-```bash
-$ node example/parse.js -a beep -b boop
-{ _: [], a: 'beep', b: 'boop' }
-```
-
-Instead of giving it option definitions, you just call it against arguments and it then tries to guess what they mean and packages them into an object. So, no varargs, no help screens, no validation. I'd have to build all of that manually on top of it.
-
-I've decided that's too barebones for what I want out of an argument parser library. Therefore minimist is out.
-
-### Nopt
-
-`nopt` | [![github](static/github.png)](https://github.com/npm/nopt) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/nopt)
-|-----|----|
-Stars | 460
-Forks | 35
-Downloads / week | 7,145,337
-Dependencies | [2/4](http://npm.broofa.com/?q=nopt)
-Licenses | MIT
-
-What's this? Relatively few github stars, but tons of npm downloads? Turns out, this is the lib that npm.js developed internally to handle parsing for their npm utility (that's why the download count).
-
-> If you want to write an option parser, don't write an option parser. Write a package manager, or a source control system, or a service restarter, or an operating system. You probably won't end up with a good one of those, but if you don't give up, and you are relentless and diligent enough in your procrastination, you may just end up with a very nice option parser.
-
-Unfortunately, even though it has predefined argument definitions, it doesn't seem to have a help layer at all. A weird in-house-ish project that never caught on, doesn't get updated often and should probably be avoided.
-
-### Gar
-
-`gar` | [![github](static/github.png)](https://github.com/ethanent/gar) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/gar)
-|-----|----|
-Stars | 24
-Forks | 2
-Downloads / week | 11,787
-Dependencies | [0](http://npm.broofa.com/?q=gar)
-Licenses | MIT
-
-"Like minimist and optimist, only even smaller (4kb)". It gets disqualified for the same reasons as mininist.
-
 ## Candidates
 
-For each of the following candidates, I have written a full implementation of the target program.
+For each of the candidate libraries, I have written a program implementing the requirements above to the best of my abilities. As we are about to see, very few were able to fulfill them *exactly* right, but that's OK. The requirements are intentionally a bit tricky and vague, intended to take libraries off the beaten path.
+
+I have also added the rough number of Github stars and forks, NPM downloads, dependencies (how many other libraries do they require in package.json) and licences you'll have to worry about. This info is reasonably accurate as of 2018, but do *not* expect it to be updated. It's for informational purposes only.
+
+With that said, let's get going.
 
 ### commander.js
 
@@ -191,8 +143,6 @@ if (!executed) {
 
 ![](static/commander.png)
 
-#### Thoughts
-
 - It supports commands and default commands, it can generate help with description text and version number and collect multiple arguments using reduce-like syntax (very neat).
 
 - Good typings support out of the box and no dependencies, both increasingly important features for me.
@@ -200,9 +150,9 @@ if (!executed) {
 - The library's age shows. I get a strong odor of a legacy project, where more and more features have been added over the years, distorting the original API surface of the project.
                            
   For example, if you do
-	```
-	program.command('cmd', 'My command')
-	```
+  ```
+  program.command('cmd', 'My command')
+  ```
   commander will try to find and execute file `app-cmd.js`. The way this differs from "normal" commands is the existence of the description (the second argument). But why can't I describe normal commands? Very strange and non-intuitive API, in my opinion.
 
 - The way you specify long and short parameter names is kind of clumsy. You can't have a short option without a corresponding long version.
@@ -217,9 +167,7 @@ if (!executed) {
 
 - There is no way to tell which command has been executed, if any.
 
-#### Conclusion
-
-Commander is not outstanding in any particular metric, but is at least solid in all of them. A decent all-around choice.
+##### Commander is not outstanding in any particular metric, but is at least solid in all of them. A decent all-around choice.
 
 ## Yargs
 
@@ -312,8 +260,6 @@ yargs
 
 ![](static/yarrgs.png)
 
-#### Thoughts
-
 - The library seems to have recently gone through a serious transition, where it has moved from a fully fluid to a more object-based configuration notation. Unfortunately, the old api and docs remain around, which makes figuring out how to do things harder than it needs to be (in 2018). In my program, I have decided to use object-notation to define all the arguments and their switches.
 
 - In general, I found the documentation rather lacking. Example: Variadic positional arguments are only mentioned briefly in the advanced usage guide, and are missing from the central API docs.
@@ -330,9 +276,7 @@ yargs
 
 - This is one of rare libraries that also generates a bash completion. I had to manually add my app to ENV, but after that, I got it working.
 
-#### Conclusion
-
-One of the most powerful and popular libraries around. On the downside, I personally fond it unpleasant to use (due to confusing api and docs), and its help output rather unremarkable.
+##### Yargs is one of the most powerful and popular libraries around. On the downside, I personally found it unpleasant to use (due to confusing api and docs), and its help output rather unremarkable.
 
 ## Caporal
 
@@ -399,8 +343,6 @@ function getDebugLevel(logger) {
 ![](static/caporal1.png)
 ![](static/caporal2.png)
 
-#### Thoughts
-
 - Caporal is indeed a framework. It wants all your code to live inside its action() callbacks that are triggered based on CLI commands. They automatically parse logger verbosity options, create a winston logger and feed it to your command methods. This is all *extremely* opinionated - their way or the highway. 
 
 - In general I like how help is formatted (colors always help).
@@ -417,9 +359,7 @@ function getDebugLevel(logger) {
 
 - Caporal claims to have auto-completion, but I couldn't get it to work.
 
-#### Conclusion
-
-The Caporal "framework" alows you to put together pretty nice CLI app without a lot of effort. If you want something super quick or exactly agree with their decisions, it's an OK choice. But it's not for me.
+##### Caporal "framework" alows you to put together pretty nice CLI app without a lot of effort. If you want something super quick or exactly agree with their decisions, it's an OK choice. But it's not for me.
 
 ## Optionator
 
@@ -515,11 +455,11 @@ ${lib.INFO.syntax
 
 let options;
 try {
-	options = optionator.parseArgv(process.argv);
+  options = optionator.parseArgv(process.argv);
 }
 catch (err) {
-	console.log(err.message);
-	process.exit(1);
+  console.log(err.message);
+  process.exit(1);
 }
 
 if (options.help) {
@@ -547,8 +487,6 @@ function showHelp() {
 
 ![](static/optionator.png)
 
-#### Thoughts
-
 - Big minus right away: the library doesn't support commands. I ended up triggering my server using switches.
 
 - It doesn't support counting of joined flags. I had to use `--dd` instead of `-dd`.
@@ -559,9 +497,7 @@ function showHelp() {
 
 - The library has a lot of fiddly options, but they feel like they've been added to fill some specific use case the author had, and are not overly useful in a general sense.
 
-#### Conclusion
-
-A minor library with "the one thing" to try and raise it above the crowd (validation stuff). Unfortunately, I don't find its "one thing" particularly useful, at least for the way I do things.
+##### Optionator is a minor library with "the one thing" to try and raise it above the crowd (validation stuff). Unfortunately, I don't find its "one thing" particularly useful, at least for the way I do things.
 
 ## Sywac
 
@@ -637,8 +573,6 @@ sywac
 
 ![](static/sywac.png)
 
-#### Thoughts
-
 - Sywac has a concept of "default command", but neither it nor its parameters are displayed anywhere on the help screen. User would have no idea it even exists. This feature frankly seems broken. I ended up just adding an `eval` command.
 
 - The library doesn't have typings or JSDoc annotations. Intellisense in WebStorm was pretty poor.
@@ -651,9 +585,7 @@ sywac
 
 - It has solid help output, with defaults and types. There are a lot of other options there. For example, it offers hooks to colorize each element of the help screen (that *does* seem to be going a bit far). Due to incomplete state of documentation, I suspect there are at least some nuances I am missing here.
 
-#### Conclusion
-
-Nice and ambitious attempt, but due to bugs, incomplete documentation and low bus factor, I can't recommend this library at this point.
+##### Sywac is a nice and ambitious attempt, but due to bugs, incomplete documentation and low bus factor, I can't recommend it at this point.
 
 ### Sade
 
@@ -721,8 +653,6 @@ function getDebugLevel(opts) {
 
 ![](static/sade.png)
 
-#### Thoughts
-
 - The library has a default command option (you can do `app 2+2`, immediately executing the eval command). This is not clearly marked in the generated help, though.
 
 - It doesn't support variadic arguments directly, but I found a way to hack it in manually by consuming unparsed arguments. 
@@ -731,9 +661,7 @@ function getDebugLevel(opts) {
 
 - There doesn't seem to be a way to insert own texts (like software description or syntax info) into the help sections.
 
-#### Conclusion
-
-It's a decent library, but it doesn't offer enough to recommend it over its more popular counterparts (other than cutsey culture references).
+##### Sade is a decent library, but it doesn't offer enough to recommend it over its more popular counterparts (other than cutsey culture references).
 
 ### command-line-args
 
@@ -856,8 +784,6 @@ function showHelp() {
 
 ![](static/command-line-args.png)
 
-#### Thoughts
-
 - Very nice help screen. I appreciate the suport for adding custom help sections. I only wish they'd allow adding multiple sections under one header (eg. an intro text, a table, a final remark). 
 
 - Documentation is pretty good, they have both example usage code and API listings.
@@ -868,11 +794,7 @@ function showHelp() {
 
 - Library supports adding ASCII banners to output, which I find super cool. Unfortunately, I found alignment a bit buggy when I tried using backslash characters anywhere inside the ASCII art.
 
-#### Conclusion
-
-`command-line-args` gives you a command parsing toolbox and leaves you on your own to craft the CLI interface you like. There are a few notable options missing, but there is enough flexibility in the library so that you can add them manually. Also, the output is pretty nice.
-
-Recommend for advanced programmers that have the time to fiddle a bit and get things exactly how they like them.
+##### `command-line-args` gives you a basic toolbox to parse args and show nice help output, but requires you to pull your sleeves to get something more advanced going. Recommend for advanced programmers that have the time to fiddle a bit and make things work exactly how they like them.
 
 ### argparse
 
@@ -900,17 +822,17 @@ const parser = new ArgumentParser({
 });
 
 parser.formatHelp = ((pFormatHelp) => {
-	return function () {
-		return pFormatHelp()
-			+ '\nSyntax:\n'
-			+ lib.INFO.syntax
-				.split('\n')
-				.map(line => '  ' + line)
-				.join('\n')
-			+ '\n'
-	};
+  return function () {
+    return pFormatHelp()
+      + '\nSyntax:\n'
+      + lib.INFO.syntax
+        .split('\n')
+        .map(line => '  ' + line)
+        .join('\n')
+      + '\n'
+  };
 })(
-	parser.formatHelp.bind(parser)
+  parser.formatHelp.bind(parser)
 );
 
 parser.addArgument(['-d', '--debug'], {
@@ -922,8 +844,8 @@ parser.addArgument(['-d', '--debug'], {
 const subparsers = parser.addSubparsers({
   title: 'Commands',
   dest: 'command',
-	help: 'Command to execute. Call with "-h" for details.',
-	required: false
+  help: 'Command to execute. Call with "-h" for details.',
+  required: false
 });
 
 const serve = subparsers.addParser('serve', {
@@ -936,33 +858,31 @@ serve.addArgument(['-p', '--port'], {
 });
 
 const eval = subparsers.addParser('eval', {
-	addHelp: true,
+  addHelp: true,
 });
 
 eval.addArgument('expression', {
-	help: 'Expression to evaluate',
-	nargs: 1
+  help: 'Expression to evaluate',
+  nargs: 1
 });
 
 eval.addArgument('values', {
-	help: 'Values to use, in format name=value (eg. x=2)',
-	nargs: '*'
+  help: 'Values to use, in format name=value (eg. x=2)',
+  nargs: '*'
 });
 
 const args = parser.parseArgs();
 
 if (args.command === 'serve') {
-	lib.serve(args.port, args.debug);
+  lib.serve(args.port, args.debug);
 }
 else if (args.command === 'eval') {
-	const values = lib.valuesFromPairs(args.values);
-	lib.evaluateToStdOut(args.expression[0], values);
+  const values = lib.valuesFromPairs(args.values);
+  lib.evaluateToStdOut(args.expression[0], values);
 }
 ```
 
 ![](static/argparse.png)
-
-#### Thoughts
 
 - As I remembered, argparse is a very full-featured library, with support for commands, flag counting, type casting and aggregation.
 
@@ -982,30 +902,123 @@ else if (args.command === 'eval') {
   
   As a sidenote, the internals of the library and pretty clean and well documented, making it relatively easy to hack around.
 
-#### Conclusion
+##### Argparse is a powerful and stable library, but with mediocre docs and help output. There are better libraries around with similar features.
 
-Powerful and stable library, but with mediocre docs and help output. There are better libraries around with similar features.
+## Rejected candidates
 
+Some libraries that I've rejected based on reading the documentation and fiddling a bit, but without writing the actual test program.
 
- 
+### Minimist
 
+`minimist` | [![github](static/github.png)](https://github.com/substack/minimist) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/minimist)
+|-----|----|
+Stars | 3,055
+Forks | 172
+Downloads / week | 13,222,137
+Dependencies | [0](http://npm.broofa.com/?q=minimist)
+Licenses | MIT
 
+A venerable and extremely popular library. It has two problems, though:
 
+1. Last updated in 2015
+2. No option definitions at all
 
+To clarify the second point, you use minimist like this:
 
-  
+```javascript
+var argv = require('minimist')(process.argv.slice(2));
+console.dir(argv);
+```
 
+```bash
+$ node example/parse.js -a beep -b boop
+{ _: [], a: 'beep', b: 'boop' }
+```
 
------------------------------
+Instead of giving it option definitions, you just call it against arguments and it then tries to guess what they mean and packages them into an object. So, no varargs, no help screens, no validation. I'd have to build all of that manually on top of it.
 
-Deprecated contenders:
-- https://github.com/harthur/nomnom
-- https://github.com/substack/node-optimist
+I've decided that's too barebones for what I want out of an argument parser library. Therefore minimist is out.
 
-Contenders:
-- http://yargs.js.org/
-- https://github.com/tj/commander.js
-- https://github.com/substack/minimist
-- https://github.com/leo/args
-- https://github.com/nodeca/argparse
+### Nopt
 
+`nopt` | [![github](static/github.png)](https://github.com/npm/nopt) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/nopt)
+|-----|----|
+Stars | 450
+Forks | 35
+Downloads / week | 7M
+Dependencies | [2/4](http://npm.broofa.com/?q=nopt)
+Licenses | MIT
+
+What's this? Relatively few github stars, but tons of npm downloads? Turns out, this is the lib that npm.js developed internally to handle parsing for their npm utility (that's why the download count).
+
+> If you want to write an option parser, don't write an option parser. Write a package manager, or a source control system, or a service restarter, or an operating system. You probably won't end up with a good one of those, but if you don't give up, and you are relentless and diligent enough in your procrastination, you may just end up with a very nice option parser.
+
+Unfortunately, even though it has predefined argument definitions, it doesn't seem to have a help layer at all. A weird in-house-ish project that never caught on, doesn't get updated often and should probably be avoided.
+
+### Gar
+
+`gar` | [![github](static/github.png)](https://github.com/ethanent/gar) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/gar)
+|-----|----|
+Stars | 20
+Forks | 2
+Downloads / week | 10K
+Dependencies | [0](http://npm.broofa.com/?q=gar)
+Licenses | MIT
+
+"Like minimist and optimist, only even smaller (4kb)". It gets disqualified for the same reasons as mininist.
+
+### Mri
+
+`mri` | [![github](static/github.png)](https://github.com/lukeed/mri) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/mri)
+|-----|----|
+Stars | 250
+Forks | 10
+Downloads / week | 150K
+Dependencies | [0](http://npm.broofa.com/?q=mri)
+Licenses | MIT
+
+> This is a fast and lightweight alternative to minimist and yargs-parser.
+
+Another minimal library, that is better used as a basis for other libraries than directly by application developers. And in fact, it is the basis for the ***sade*** library, covered above.
+
+### Arg
+
+`arg` | [![github](static/github.png)](https://github.com/zeit/arg) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/arg)
+|-----|----|
+Stars | 100
+Forks | 6
+Downloads / week | 90K
+Dependencies | [0](http://npm.broofa.com/?q=arg)
+Licenses | MIT
+
+An npm prominent name squater, without a lot of features or adoption. Its NPM downloads have recently jumped through the roof (100 -> 100K), so it might see some more maintenance in the future.
+
+### Meow
+
+`meow` | [![github](static/github.png)](https://github.com/zeit/arg) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/arg)
+|-----|----|
+Stars | 1.5K
+Forks | 80
+Downloads / week | 4.5M
+Dependencies | [45](http://npm.broofa.com/?q=meow)
+Licenses | MIT AND CC-BY-3.0, Apache-2.0, BSD-2-Clause, CC-BY-SA-3.0, ISC, MIT
+
+*Ridiculously* popular library. Unfortunately, it doesn't seem to support help output or commands, so it's out for my use case (2 strikes out).
+
+Even though it lacks in argument parsing abilities, it adds some framework-like capabilities - catches unhandled promise rejections, sets terminal title etc. I am not sure I like this combination of features, although it's arguably a better mix than *Caporal*, with their ridiculous logger integration.
+
+I am also concerned with the huge debt of dependencies and licences it brings in, but since I haven't tried it, I'll reserve my judgment.
+
+## Conclusion
+
+After all this, which library did I like the best?
+
+Well, as you might have guessed, I have chosen the combo of **`command-line-args`** and **`command-line-usage`** for my current project. I like the flexibility it gives me and how it formats output. I added the ASCII art company logo, built some tooling around it, and it's great.
+
+So, am I saying `command-line-args` is ***the best*** command parser argument library around? Not even close.
+
+If fact, for most users, in most use cases, I would recommend you stick with **`yargs`**. It has huge community, excellent features, it gets updated regularly, and you can just grab one of the demos from the site and get going quickly (hopefully, they clear up confusing docs and API soon). Similar can be said for **`commander`**. You won't go wrong if you chose either of these two "top dogs".
+
+Finally, if you happen to be building a very throwaway very unambitious CLI app, something like **`Caporal`** might get you up to speed faster than any of the more library-like libraries I've covered.
+
+None of the other "underdogs" were quite up to the level of these 4, but that's just one guy's opinion. I invite you to go through the screenshots and code samples, and form your own judgment. Maybe one of them turns out to be the perfect fit for your own project.
