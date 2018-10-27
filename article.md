@@ -13,8 +13,6 @@ h3 + table tr > td:first-child {
 }
 </style>
 
-[//]: # (@remove_next_line)
-
 # Node.js argument parsers in 2018 
 
 As node.js code base at the day job got more mature, I was in the market for a new command line parser library. In the past, I have used argparse, yargs and a few others. But a fresh project is always a chance to reexemine past decisions and get my tooling up to speed with current landscape. 
