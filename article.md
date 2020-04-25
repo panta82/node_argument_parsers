@@ -87,8 +87,8 @@ With that said, let's get going.
 
 ### Commander
 
-`commander` | [![github](static/github.png)](https://github.com/tj/commander.js) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/commander)
-|-----|----|
+`commander` | <a href="https://github.com/tj/commander.js" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/commander" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 11K
 Forks | 907
 Downloads / week | 11M
@@ -188,8 +188,8 @@ Commander is not outstanding in any particular metric, but is at least solid in 
 
 ### Yargs
 
-`yargs` | [![github](static/github.png)](https://github.com/yargs/yargs) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/yargs)
-|-----|----|
+`yargs` | <a href="https://github.com/yargs/yargs" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/yargs" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 4K
 Forks | 415
 Downloads / week | 17M
@@ -303,8 +303,8 @@ Yargs is one of the most powerful and popular libraries around. On the downside,
 
 ### Caporal
 
-`caporal` | [![github](static/github.png)](https://github.com/mattallty/Caporal.js) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/caporal)
-|-----|----|
+`caporal` | <a href="https://github.com/mattallty/Caporal.js" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/caporal" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 2K
 Forks | 92
 Downloads / week | 15K
@@ -390,8 +390,8 @@ Caporal "framework" alows you to put together pretty nice CLI app without a lot 
 
 ### Optionator
 
-`optionator` | [![github](static/github.png)](https://github.com/gkz/optionator) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/optionator)
-|-----|----|
+`optionator` | <a href="https://github.com/gkz/optionator" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/optionator" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 100
 Forks | 7
 Downloads / week | 4M
@@ -532,8 +532,8 @@ Optionator is a minor library with "the one thing" to try and raise it above the
 
 ### Sywac
 
-`sywac` | [![github](static/github.png)](https://github.com/sywac/sywac) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/sywac)
-|-----|----|
+`sywac` | <a href="https://github.com/sywac/sywac" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/sywac" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 50
 Forks | 1
 Downloads / week | 2K
@@ -626,8 +626,8 @@ Sywac is a nice and ambitious attempt, but due to bugs, incomplete documentation
 
 ### Sade
 
-`sade` | [![github](static/github.png)](https://github.com/lukeed/sade) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/sade)
-|-----|----|
+`sade` | <a href="https://github.com/lukeed/sade" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/sade" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 300
 Forks | 12
 Downloads / week | 1.5K
@@ -706,8 +706,8 @@ Sade is a decent library, but it doesn't offer enough to recommend it over its m
 
 ### command-line-args
 
-`command-line-args` | [![github](static/github.png)](https://github.com/75lb/command-line-args) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/command-line-args)
-|-----|----|
+`command-line-args` | <a href="https://github.com/75lb/command-line-args" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/command-line-args" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 300
 Forks | 37
 Downloads / week | 150K
@@ -845,8 +845,8 @@ function showHelp() {
 
 ### argparse
 
-`argparse v1.0.10` | [![github](static/github.png)](https://github.com/nodeca/argparse) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/argparse)
-|-----|----|
+`argparse v1.0.10` | <a href="https://github.com/nodeca/argparse" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/argparse" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 250
 Forks | 35
 Downloads / week | 5M
@@ -963,8 +963,8 @@ I will now briefly mention some libraries that I've rejected based on reading th
 
 ### Minimist
 
-`minimist` | [![github](static/github.png)](https://github.com/substack/minimist) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/minimist)
-|-----|----|
+`minimist` | <a href="https://github.com/substack/minimist" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/minimist" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 3,055
 Forks | 172
 Downloads / week | 13,222,137
@@ -994,8 +994,8 @@ I've decided that's too barebones for what I want out of an argument parser libr
 
 ### Nopt
 
-`nopt` | [![github](static/github.png)](https://github.com/npm/nopt) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/nopt)
-|-----|----|
+`nopt` | <a href="https://github.com/npm/nopt" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/nopt" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 450
 Forks | 35
 Downloads / week | 7M
@@ -1010,8 +1010,8 @@ Unfortunately, even though it has predefined argument definitions, it doesn't se
 
 ### Gar
 
-`gar` | [![github](static/github.png)](https://github.com/ethanent/gar) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/gar)
-|-----|----|
+`gar` | <a href="https://github.com/ethanent/gar" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/gar" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 20
 Forks | 2
 Downloads / week | 10K
@@ -1022,8 +1022,8 @@ Licenses | MIT
 
 ### Mri
 
-`mri` | [![github](static/github.png)](https://github.com/lukeed/mri) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/mri)
-|-----|----|
+`mri` | <a href="https://github.com/lukeed/mri" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/mri" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 250
 Forks | 10
 Downloads / week | 150K
@@ -1036,8 +1036,8 @@ Another minimal library, that is better used as a basis for other libraries than
 
 ### Arg
 
-`arg` | [![github](static/github.png)](https://github.com/zeit/arg) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/arg)
-|-----|----|
+`arg` | <a href="https://github.com/zeit/arg" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/arg" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 100
 Forks | 6
 Downloads / week | 90K
@@ -1048,8 +1048,8 @@ An npm prominent name squater, without a lot of features or adoption. Its NPM do
 
 ### Meow
 
-`meow` | [![github](static/github.png)](https://github.com/zeit/arg) &nbsp; [![npm](static/npm.png)](https://www.npmjs.com/package/arg)
-|-----|----|
+`meow` | <a href="https://github.com/zeit/arg" target="_blank"><img src="static/github.png" alt="github" /></a> <a href="https://www.npmjs.com/package/arg" target="_blank"><img src="static/npm.png" alt="npm" /></a>
+-----|----
 Stars | 1.5K
 Forks | 80
 Downloads / week | 4.5M
